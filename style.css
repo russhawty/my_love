@@ -1,0 +1,52 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e8a0cf !important; /* Светлый фон */
+    background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fpikabu.ru%2Fstory%2Fskolko_soberet_milyiy_kotik_10639275&psig=AOvVaw2jnolhXJNX4yRTM8lpWIzz&ust=1734106257679000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPiw-67PoooDFQAAAAAdAAAAABAE'); /* Замените на ваш URL с фоном */
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #333; /* Цвет текста */
+    text-align: center; /* Центрирование текста */
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #ff69b4; /* Розовый цвет для заголовка */
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #8d09b9; /* Более темный цвет для текста */
+}
+
+#clockdiv {
+    font-size: 2em;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: rgba(249, 10, 213, 0.8); /* Полупрозрачный фон для часов */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(23, 13, 13, 0.3);
+}
+
+span {
+    font-weight: bold;
+}
+
+#congratulations {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(194, 63, 142, 0.437); /* Полупрозрачный фон для поздравления */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2em; /* Меньший размер заголовка на мобильных устройствах */
+    }
+
+    #clockdiv {
+        font-size: 1.5em; /* Меньший размер часов на мобильных устройствах */
+    }
+}
