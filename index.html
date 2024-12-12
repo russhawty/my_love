@@ -39,15 +39,16 @@
     <div id="clockdiv">  
         <span class="days"></span> дней <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>  
     </div>
-
-    <div id="content"></div> <!-- Контейнер для гифок и видео -->
+</div>
+    <img id="confetti" src="images/png-klev-club-dq9b-p-khlopushka-png-4.png" alt="Хлопушка" />
+    
 
     <script>
-        var birthday = 'December 12, 2024 21:56:00 GMT+03'; 
+        var birthday = 'December 12, 2024 22:03:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
         var contentDiv = document.getElementById('content');
-
+        var confetti = document.getElementById('confetti');
         // Массив с контентом (GIF, видео и изображения)
         var mediaArray = [
             { type: 'image', src: 'images/gifki-privet-prikolnye-privet-kartinki-prikolnye-smeshnye-krasivye-cats.gif' },
@@ -92,7 +93,16 @@
 
         updateClock();  
         var timeinterval = setInterval(updateClock, 1000);
-
+        function showConfetti() {
+            confetti.style.display = "block";
+            confetti.classList.add("confetti-animation");
+            
+            // Скрыть хлопушку через 1 секунду после анимации
+            setTimeout(() => {
+                confetti.style.display = "none";
+                confetti.classList.remove("confetti-animation");
+            }, 1000);
+        }
             function showContent() {
             var currentDate = new Date();
             var lastShowTime = localStorage.getItem('lastShowTime');
