@@ -35,7 +35,7 @@
     <div id="content"></div> <!-- Контейнер для гифок и видео -->
 
     <script>
-        var birthday = 'December 12, 2024 21:48:00 GMT+03'; 
+        var birthday = 'December 12, 2024 21:51:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
         var contentDiv = document.getElementById('content');
@@ -85,25 +85,25 @@
         updateClock();  
         var timeinterval = setInterval(updateClock, 1000);
 
-        function showContent() {
+            function showContent() {
             var currentDate = new Date();
             var lastShowTime = localStorage.getItem('lastShowTime');
             var lastShowDate = lastShowTime ? new Date(lastShowTime) : null;
-            
-            if (lastShowTime) {
-                lastShowTime = new Date(lastShowTime);
-                // Проверяем, прошло ли 24 часа с момента последнего показа
-                if (currentDate - lastShowTime < 24 * 60 * 60 * 1000) {
-                    return; // Если прошло менее 24 часов, ничего не показываем
-                }
+
+            // Если время последнего показа есть, проверяем, прошло ли 24 часа
+            if (lastShowDate && (currentDate - lastShowDate < 24 * 60 * 60 * 1000)) {
+                // Если прошло менее 24 часов, показываем прежний контент
+                return;
             }
 
             // Получаем индекс для выбора медиа
             var index = Math.floor(Math.random() * mediaArray.length);
             var mediaItem = mediaArray[index];
 
+            // Очищаем предыдущий контент
+            contentDiv.innerHTML = '';
 
-// Создаем элемент в зависимости от типа
+            // Создаем элемент в зависимости от типа
             if (mediaItem.type === 'image') {
                 var img = document.createElement('img');
                 img.src = mediaItem.src;
@@ -116,11 +116,10 @@
                 contentDiv.appendChild(video);
             }
 
-            contentDiv.style.display = "block"; // Показываем контент
-
             // Сохраняем текущее время показа контента в localStorage
             localStorage.setItem('lastShowTime', currentDate.toISOString());
         }
+            contentDiv.style.display = "block"; // Показываем контент
 
         // Запускаем проверку каждую минуту
         setInterval(showContent, 60000);
