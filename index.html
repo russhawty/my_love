@@ -4,65 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поздравляю</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
             justify-content: center; 
             align-items: center; 
+            flex-direction: column; 
             height: 100vh; 
             margin: 0; 
             background-color: #b75d97; 
             font-family: Arial, sans-serif; 
-            position: relative; /* Для абсолютного позиционирования котиков */
-            overflow: hidden; /* Скрыть переполнение, если котики выходят за пределы */
+            position: relative; 
+            overflow: hidden; 
         }
-        #clockdiv {
-            font-size: 2rem; /* Размер шрифта таймера */
-            padding: 20px; /* Отступы вокруг таймера */
-            background-color: #f5cee4; /* Цвет фона таймера */
-            border: 2px solid #333; /* Граница таймера */
-            border-radius: 10px; /* Скругление углов */
-            text-align: center; /* Центрирование текста внутри таймера */
-        }
-        #congratulations {
-            display: none; /* Скрываем поздравление по умолчанию */
-            text-align: center; /* Центрирование текста поздравления */
-        }
-        #confetti {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-        .confetti-animation {
-            animation: explode 1s forwards;
-        }
-        /* Стили для котиков */
-        .cat-image {
-            position: absolute;
-            width: 100px; /* Ширина изображений котиков */
-        }
-        .top-left {
-            top: 0;
-            left: 0;
-        }
-        .top-right {
-            top: 0;
-            right: 0;
-        }
-        .bottom-left {
-            bottom: 0;
-            left: 0;
-        }
-        .bottom-right {
-            bottom: 0;
-            right: 0;
+        #content {
+            display: none; /* Скрываем контент по умолчанию */
+            text-align: center; /* Центрирование текста */
         }
     </style>
 </head>
@@ -74,19 +31,24 @@
     <div id="clockdiv">  
         <span class="days"></span> дней <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>  
     </div>
-    <img id="confetti" src="images/png-klev-club-dq9b-p-khlopushka-png-4.png" alt="Хлопушка" />
 
-    <!-- Изображения котиков -->
-    <img class="cat-image top-left" src="images/Без названия.jfif" alt="Котик">
-    <img class="cat-image top-right" src="images/milye-kotiki-16.webp" alt="Котик">
-    <img class="cat-image bottom-left" src="images/e9304e78c01418b5ea956d3be36a.jpg" alt="Котик">
-    <img class="cat-image bottom-right" src="images/600x0_oeqarugdvaawflqq_jpg_e265.jpg" alt="Котик">
+    <div id="content"></div> <!-- Контейнер для гифок и видео -->
 
     <script>
-        var birthday = 'December 12, 2024 20:50:00 GMT+03'; 
+        var birthday = 'December 12, 2024 20:30:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
-        var confetti = document.getElementById('confetti');
+        var contentDiv = document.getElementById('content');
+
+        // Массив с контентом (GIF, видео и изображения)
+        var mediaArray = [
+            { type: 'image', src: 'images/pic1.gif' },
+            { type: 'image', src: 'images/pic2.gif' },
+            { type: 'video', src: 'videos/video1.mp4' },
+            { type: 'image', src: 'images/pic3.gif' },
+            { type: 'image', src: 'images/pic4.gif' },
+            // Добавьте больше элементов по желанию
+        ];
 
         function getTimeRemaining(endtime) {  
             var t = Date.parse(endtime) - Date.parse(new Date());  
@@ -116,23 +78,51 @@
                 clearInterval(timeinterval);  
                 clock.style.display = "none"; // Скрываем таймер
                 document.getElementById('congratulations').style.display = "block"; 
-                showConfetti();
+                showContent(); // Показать контент
             }  
         }  
 
         updateClock();  
         var timeinterval = setInterval(updateClock, 1000);
 
-        function showConfetti() {
-            confetti.style.display = "block";
-            confetti.classList.add("confetti-animation");
+        function showContent() {
+            var currentDate = new Date();
             
-            // Скрыть хлопушку через 1 секунду после анимации
-            setTimeout(() => {
-                confetti.style.display = "none";
-                confetti.classList.remove("confetti-animation");
-            }, 1000);
+            // Получаем сохраненное время показа контента из localStorage
+            var lastShowTime = localStorage.getItem('lastShowTime');
+            if (lastShowTime) {
+                lastShowTime = new Date(lastShowTime);
+                // Проверяем, прошло ли 24 часа с момента последнего показа
+                if (currentDate - lastShowTime < 24 * 60 * 60 * 1000) {
+                    return; // Если прошло менее 24 часов, ничего не показываем
+                }
+            }
+
+            // Получаем индекс для выбора медиа
+            var index = Math.floor(Math.random() * mediaArray.length);
+            var mediaItem = mediaArray[index];
+
+            // Создаем элемент в зависимости от типа
+            if (mediaItem.type === 'image') {
+                var img = document.createElement('img');
+                img.src = mediaItem.src;
+                img.alt = "Случайное изображение";
+                contentDiv.appendChild(img);
+            } else if (mediaItem.type === 'video') {
+                var video = document.createElement('video');
+                video.src = mediaItem.src;
+                video.controls = true; // Добавляем элементы управления
+                contentDiv.appendChild(video);
+            }
+
+            contentDiv.style.display = "block"; // Показываем контент
+
+            // Сохраняем текущее время показа контента в localStorage
+            localStorage.setItem('lastShowTime', currentDate.toISOString());
         }
+
+        // Запускаем проверку каждую минуту
+        setInterval(showContent, 60000);
     </script>
 </body>
 </html>
