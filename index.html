@@ -29,6 +29,20 @@
             display: none; /* Скрываем поздравление по умолчанию */
             text-align: center; /* Центрирование текста поздравления */
         }
+          #confetti {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .confetti-animation {
+            animation: explode 1s forwards;
+        }
     </style>
 </head>
 <body>
@@ -44,7 +58,7 @@
     
 
     <script>
-        var birthday = 'December 12, 2024 22:05:00 GMT+03'; 
+        var birthday = 'December 12, 2024 22:08:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
         var contentDiv = document.getElementById('content');
