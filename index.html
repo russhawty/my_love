@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моему котеночку</title>
+    <title>Поздравляю</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -27,6 +27,20 @@
             display: none; /* Скрываем поздравление по умолчанию */
             text-align: center; /* Центрирование текста поздравления */
         }
+        #confetti {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .confetti-animation {
+            animation: explode 1s forwards;
+        }
     </style>
 </head>
 <body>
@@ -37,11 +51,13 @@
     <div id="clockdiv">  
         <span class="days"></span> дней <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>  
     </div>
+    <img id="confetti" src="path_to_your_confetti_image.png" alt="Хлопушка" />
 
     <script>
         var birthday = 'January 6, 2025 00:00:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
+        var confetti = document.getElementById('confetti');
 
         function getTimeRemaining(endtime) {  
             var t = Date.parse(endtime) - Date.parse(new Date());  
@@ -70,15 +86,22 @@
             if (t.total <= 0) {  
                 clearInterval(timeinterval);  
                 document.getElementById('congratulations').style.display = "block"; 
+                showConfetti();
             }  
         }  
 
         updateClock();  
         var timeinterval = setInterval(updateClock, 1000);
 
-        function surprize(days,hours,minutes,seconds)
-        {
-            var surprize1='December 22, 2024 00:17:40 GMT+03';
+        function showConfetti() {
+            confetti.style.display = "block";
+            confetti.classList.add("confetti-animation");
+            
+            // Скрыть хлопушку через 1 секунду после анимации
+            setTimeout(() => {
+                confetti.style.display = "none";
+                confetti.classList.remove("confetti-animation");
+            }, 1000);
         }
     </script>
 </body>
