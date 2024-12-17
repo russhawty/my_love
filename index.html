@@ -113,14 +113,77 @@
         var contentDiv = document.getElementById('content');
         var confetti = document.getElementById('confetti');
 
+        // Массивы с гифками и выражениями
         var mediaArray = [
-            { type: 'image', src: 'images/gifki-privet-prikolnye-privet-kartinki-prikolnye-smeshnye-krasivye-cats.gif' },
-            { type: 'image', src: 'images/image_861007190943094997610.gif' },
-            { type: 'image', src: 'images/pococado-бомба.gif' },
-            { type: 'image', src: 'images/dog-swing.gif' },
-            { type: 'image', src: 'images/cat-кошка.gif' },
-            // Добавьте другие гифки по желанию
+            { type: 'image', src: 'images/gif1.gif' },
+            { type: 'image', src: 'images/gif2.gif' },
+            { type: 'image', src: 'images/gif3.gif' },
+            { type: 'image', src: 'images/gif4.gif' },
+            { type: 'image', src: 'images/gif5.gif' },
+            { type: 'image', src: 'images/gif6.gif' },
+            { type: 'image', src: 'images/gif7.gif' },
+            { type: 'image', src: 'images/gif8.gif' },
+            { type: 'image', src: 'images/gif9.gif' },
+            { type: 'image', src: 'images/gif10.gif' },
+            { type: 'image', src: 'images/gif11.gif' },
+            { type: 'image', src: 'images/gif12.gif' },
+            { type: 'image', src: 'images/gif13.gif' },
+            { type: 'image', src: 'images/gif14.gif' },
+            { type: 'image', src: 'images/gif15.gif' },
+            { type: 'image', src: 'images/gif16.gif' },
+            { type: 'image', src: 'images/gif17.gif' },
+            { type: 'image', src: 'images/gif18.gif' },
+            { type: 'image', src: 'images/gif19.gif' },
+            { type: 'image', src: 'images/gif20.gif' }
         ];
+
+        var expressions = [
+            "Я тебя люблю!",
+            "Ты самый лучший!",
+            "Ты — моя радость!",
+            "Любовь всей моей жизни!",
+            "Ты — мой мир!",
+            "Ты для меня всё!",
+            "С каждым днём люблю тебя всё больше!",
+            "Ты — лучшая часть моего дня!",
+            "С тобой я счастлив!",
+            "Ты — моя мечта!",
+            "Всё, что мне нужно — это ты!",
+            "Ты делаешь мою жизнь яркой!",
+            "С тобой каждый день — как праздник!",
+            "Ты — моё вдохновение!",
+            "Моё сердце бьётся только для тебя!",
+            "Ты — моя нежность!",
+            "Ты — мой смысл жизни!",
+            "Я горжусь тем, что ты со мной!",
+            "Ты — самый прекрасный человек!",
+            "Моя любовь к тебе безмерна!"
+        ];
+
+        // Рассчитываем, какой день до 6 января (с 17 декабря)
+        var startDate = new Date('December 17, 2024 00:00:00 GMT+03');
+        var currentDate = new Date();
+        var dayIndex = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+
+        if (dayIndex >= 0 && dayIndex < 20) {
+            var gif = mediaArray[dayIndex];
+            var expression = expressions[dayIndex];
+
+            // Показываем гифку
+            contentDiv.innerHTML = '';
+            var img = document.createElement('img');
+            img.src = gif.src;
+            img.alt = "Случайная гифка";
+            contentDiv.appendChild(img);
+
+            // Показываем выражение
+            var expressionElement = document.createElement('h2');
+            expressionElement.textContent = expression;
+            contentDiv.appendChild(expressionElement);
+        } else if (dayIndex >= 20) {
+            document.getElementById('congratulations').style.display = "block"; 
+            contentDiv.innerHTML = "<h2>С Днём Рождения!</h2>";
+        }
 
         function getTimeRemaining(endtime) {  
             var t = Date.parse(endtime) - Date.parse(new Date());  
@@ -148,7 +211,7 @@
 
             if (t.total <= 0) {  
                 clearInterval(timeinterval);  
-                clock.style.display = "none"; // Скрыть таймер
+                clock.style.display = "none"; 
                 document.getElementById('congratulations').style.display = "block"; 
                 showConfetti(); 
             }  
@@ -163,33 +226,6 @@
                 confetti.style.display = "none"; // Прячем через 5 секунд
             }, 5000);
         }
-
-        function showContent() {
-            var currentDate = new Date();
-            var lastShowDate = localStorage.getItem('lastShowDate');
-            var lastDate = lastShowDate ? new Date(lastShowDate) : null;
-
-            // Если дата изменилась (показана новая гифка)
-            if (!lastDate || currentDate.getDate() !== lastDate.getDate() || currentDate.getMonth() !== lastDate.getMonth() || currentDate.getFullYear() !== lastDate.getFullYear()) {
-                var index = Math.floor(Math.random() * mediaArray.length);
-                var mediaItem = mediaArray[index];
-
-                contentDiv.innerHTML = '';
-
-                if (mediaItem.type === 'image') {
-                    var img = document.createElement('img');
-                    img.src = mediaItem.src;
-                    img.alt = "Случайное изображение";
-                    contentDiv.appendChild(img);
-                }
-
-                // Обновляем время последнего показа контента
-                localStorage.setItem('lastShowDate', currentDate.toISOString());
-            }
-        }
-
-        showContent();
-        setInterval(showContent, 60000);
     </script>
 </body>
 </html>
