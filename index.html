@@ -166,24 +166,26 @@
 
         function showContent() {
             var currentDate = new Date();
-            var lastShowTime = localStorage.getItem('lastShowTime');
-            var lastShowDate = lastShowTime ? new Date(lastShowTime) : null;
+            var lastShowDate = localStorage.getItem('lastShowDate');
+            var lastDate = lastShowDate ? new Date(lastShowDate) : null;
 
-            // Показывать контент всегда при первом заходе на сайт (для теста)
-            var index = Math.floor(Math.random() * mediaArray.length);
-            var mediaItem = mediaArray[index];
+            // Если дата изменилась (показана новая гифка)
+            if (!lastDate || currentDate.getDate() !== lastDate.getDate() || currentDate.getMonth() !== lastDate.getMonth() || currentDate.getFullYear() !== lastDate.getFullYear()) {
+                var index = Math.floor(Math.random() * mediaArray.length);
+                var mediaItem = mediaArray[index];
 
-            contentDiv.innerHTML = '';
+                contentDiv.innerHTML = '';
 
-            if (mediaItem.type === 'image') {
-                var img = document.createElement('img');
-                img.src = mediaItem.src;
-                img.alt = "Случайное изображение";
-                contentDiv.appendChild(img);
+                if (mediaItem.type === 'image') {
+                    var img = document.createElement('img');
+                    img.src = mediaItem.src;
+                    img.alt = "Случайное изображение";
+                    contentDiv.appendChild(img);
+                }
+
+                // Обновляем время последнего показа контента
+                localStorage.setItem('lastShowDate', currentDate.toISOString());
             }
-
-            // Обновляем время последнего показа контента
-            localStorage.setItem('lastShowTime', currentDate.toISOString());
         }
 
         showContent();
