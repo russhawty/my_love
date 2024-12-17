@@ -15,7 +15,7 @@
             background-color: #b75d97; 
             font-family: Arial, sans-serif; 
             position: relative; 
-            overflow: hidden; 
+            overflow: hidden;
         }
         #clockdiv {
             font-size: 2rem; /* Размер шрифта таймера */
@@ -28,20 +28,30 @@
         #congratulations {
             display: none; /* Скрываем поздравление по умолчанию */
             text-align: center; /* Центрирование текста поздравления */
-        }
-          #confetti {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
+            z-index: 10;
         }
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('images/YGg4.gif');
+            background-size: cover;
+            background-position: center;
+            display: none;
+            z-index: -1;
         }
         .confetti-animation {
             animation: explode 1s forwards;
+        }
+        @keyframes explode {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        #content {
+            display: none; /* Контент с картинками и гифками */
         }
     </style>
 </head>
@@ -53,16 +63,16 @@
     <div id="clockdiv">  
         <span class="days"></span> дней <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>  
     </div>
-</div>
-    <img id="confetti" src="images/png-klev-club-dq9b-p-khlopushka-png-4.png" alt="Хлопушка" />
-    
+    <div id="content"></div>
+    <div id="confetti"></div>
 
     <script>
-        var birthday = 'December 17, 2024 14:02:00 GMT+03'; 
+        var birthday = 'December 17, 2024 15:13:00 GMT+03'; 
         var endtime = new Date(birthday);
         var clock = document.getElementById('clockdiv');
         var contentDiv = document.getElementById('content');
         var confetti = document.getElementById('confetti');
+
         // Массив с контентом (GIF, видео и изображения)
         var mediaArray = [
             { type: 'image', src: 'images/gifki-privet-prikolnye-privet-kartinki-prikolnye-smeshnye-krasivye-cats.gif' },
@@ -101,23 +111,21 @@
                 clearInterval(timeinterval);  
                 clock.style.display = "none"; // Скрываем таймер
                 document.getElementById('congratulations').style.display = "block"; 
-                showContent(); // Показать контент
+                showConfetti(); // Показать хлопушку
             }  
         }  
 
         updateClock();  
         var timeinterval = setInterval(updateClock, 1000);
+
         function showConfetti() {
-            confetti.style.display = "block";
-            confetti.classList.add("confetti-animation");
-            
-            // Скрыть хлопушку через 1 секунду после анимации
+            confetti.style.display = "block"; // Показываем хлопушку
             setTimeout(() => {
-                confetti.style.display = "none";
-                confetti.classList.remove("confetti-animation");
-            }, 1000);
+                confetti.style.display = "none"; // Скрываем через 5 секунд
+            }, 5000); // 5000ms = 5 секунд
         }
-            function showContent() {
+
+        function showContent() {
             var currentDate = new Date();
             var lastShowTime = localStorage.getItem('lastShowTime');
             var lastShowDate = lastShowTime ? new Date(lastShowTime) : null;
@@ -141,17 +149,14 @@
                 img.src = mediaItem.src;
                 img.alt = "Случайное изображение";
                 contentDiv.appendChild(img);
-            } else if (mediaItem.type === 'video') {
-                var video = document.createElement('video');
-                video.src = mediaItem.src;
-                video.controls = true; // Добавляем элементы управления
-                contentDiv.appendChild(video);
             }
 
             // Сохраняем текущее время показа контента в localStorage
             localStorage.setItem('lastShowTime', currentDate.toISOString());
         }
-            contentDiv.style.display = "block"; // Показываем контент
+
+        // Показываем контент сразу при запуске
+        showContent();
 
         // Запускаем проверку каждую минуту
         setInterval(showContent, 60000);
