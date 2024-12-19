@@ -43,7 +43,7 @@
         }
 
         #content {
-            display: none;
+            display: block;
             margin-top: 30px;
         }
 
@@ -100,7 +100,7 @@
 
     <div id="congratulations">
         <h1>С Днём Рождения, любимый!</h1>
-        <p>Код для сейфа:275</p>
+        <p>Код для сейфа: 1234</p>
     </div>
 
     <div id="content" class="media-content"></div>
@@ -139,17 +139,17 @@
 
         var expressions = [
             "Я тебя люблю!",
-            "Ти мо самый лучши!",
+            "Ты мой самый лучший!",
             "Самый любимый на свете котик!",
             "Любовь всей моей жизни!",
             "Я тебя обожаю",
-            "Сами сладки",
-            "Сами умни",
+            "Ты самый сладкий",
+            "Ты самый умный",
             "Мой котеночек самый хороший",
-            "Сами красиви",
-            "Мой зайкин любими",
-            "Сами любими",
-            "Сами красиви мужчина на свете",
+            "Ты самый красивый",
+            "Мой зайкин любимый",
+            "Ты самый любимый",
+            "Ты самый красивый мужчина на свете",
             "Уже скучаю безумно",
             "Соскучилааась",
             "Мой самый нежный котеночек",
@@ -160,26 +160,32 @@
             "Моя любовь к тебе безгранична!"
         ];
 
-        
-        var startDate = new Date('December 19, 2024 22:07:00 GMT+03');
+        // Задаем дату старта отсчета: 19 декабря 2024 года
+        var startDate = new Date('December 19, 2024 00:00:00 GMT+03');
         var currentDate = new Date();
         var dayIndex = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
 
         if (dayIndex >= 0 && dayIndex < 20) {
-            var gif = mediaArray[dayIndex];
-            var expression = expressions[dayIndex];
+            // Добавляем гифки и фразы на страницу
+            for (let i = 0; i <= dayIndex; i++) {
+                var gif = mediaArray[i];
+                var expression = expressions[i];
 
-            // Показываем гифку
-            contentDiv.innerHTML = '';
-            var img = document.createElement('img');
-            img.src = gif.src;
-            img.alt = "Случайная гифка";
-            contentDiv.appendChild(img);
+                // Создаем элемент с гифкой
+                var img = document.createElement('img');
+                img.src = gif.src;
+                img.alt = "Случайная гифка";
+                contentDiv.appendChild(img);
 
-            // Показываем выражение
-            var expressionElement = document.createElement('h2');
-            expressionElement.textContent = expression;
-            contentDiv.appendChild(expressionElement);
+                // Создаем элемент с фразой
+                var expressionElement = document.createElement('h2');
+                expressionElement.textContent = expression;
+                contentDiv.appendChild(expressionElement);
+
+                // Тестирование: выводим в консоль каждую добавленную пару
+                console.log(`Гифка #${i + 1}:`, gif.src);
+                console.log(`Фраза #${i + 1}:`, expression);
+            }
         } else if (dayIndex >= 20) {
             document.getElementById('congratulations').style.display = "block"; 
             contentDiv.innerHTML = "<h2>С Днём Рождения!</h2>";
