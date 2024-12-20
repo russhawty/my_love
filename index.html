@@ -12,7 +12,7 @@
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            background-color: #f5c7e1; 
+            background-color: #f5c7e1;
             font-family: 'Arial', sans-serif;
             position: relative;
             overflow: hidden;
@@ -27,7 +27,6 @@
             border: 2px solid #ff69b4;
             border-radius: 10px;
             margin-bottom: 20px;
-            z-index: 10;
         }
 
         #congratulations {
@@ -47,6 +46,26 @@
             display: block;
             margin-top: 30px;
             position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gif-item {
+            width: 120px; /* Уменьшаем размер гифок */
+            height: auto;
+            margin: 10px;
+            position: absolute;
+        }
+
+        .gif-text {
+            font-size: 1rem;
+            color: #ff69b4;
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         #confetti {
@@ -71,26 +90,6 @@
             100% { opacity: 0; }
         }
 
-        .media-content img {
-            width: 150px; /* Уменьшаем размер гифок */
-            height: auto;
-            max-width: 100%;
-            margin: 10px;
-            position: absolute; /* Абсолютное позиционирование для случайного размещения */
-            animation: slide 10s infinite; /* Анимация для гифок */
-        }
-
-        @keyframes slide {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(50px) rotate(360deg); }
-            100% { transform: translateY(0) rotate(720deg); }
-        }
-
-        #content h2 {
-            color: #ff69b4;
-            font-size: 1.5rem;
-        }
-
         @media (max-width: 600px) {
             #clockdiv {
                 font-size: 1.5rem;
@@ -103,7 +102,7 @@
     </style>
 </head>
 <body>
-    <div id="clockdiv">  
+    <div id="clockdiv">
         <span class="days"></span> дней <span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span>
     </div>
 
@@ -184,13 +183,16 @@
                 var img = document.createElement('img');
                 img.src = gif.src;
                 img.alt = "Случайная гифка";
-                img.style.top = Math.random() * 80 + 'vh'; // Случайная позиция по вертикали
-                img.style.left = Math.random() * 100 + 'vw'; // Случайная позиция по горизонтали
+                img.classList.add('gif-item');
+                img.style.top = `${Math.random() * 80}%`; // Размещение гифок случайным образом по вертикали
+                img.style.left = `${Math.random() * 90}%`; // Размещение гифок случайным образом по горизонтали
                 contentDiv.appendChild(img);
 
                 // Создаем элемент с фразой
                 var expressionElement = document.createElement('h2');
                 expressionElement.textContent = expression;
+                expressionElement.classList.add('gif-text');
+                expressionElement.style.top = `${Math.random() * 80}%`;
                 contentDiv.appendChild(expressionElement);
 
                 // Тестирование: выводим в консоль каждую добавленную пару
@@ -202,23 +204,23 @@
             contentDiv.innerHTML = "<h2>С Днём Рождения!</h2>";
         }
 
-        function getTimeRemaining(endtime) {  
-            var t = Date.parse(endtime) - Date.parse(new Date());  
-            var seconds = Math.floor((t / 1000) % 60);  
-            var minutes = Math.floor((t / 1000 / 60) % 60);  
-            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);  
-            var days = Math.floor(t / (1000 * 60 * 60 * 24));  
-            return {  
-                'total': t,  
-                'days': days,  
-                'hours': hours,  
-                'minutes': minutes,  
-                'seconds': seconds  
-            };  
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                'total': t,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
         }
 
-        function updateClock() {  
-            var t = getTimeRemaining(endtime);  
+        function updateClock() {
+            var t = getTimeRemaining(endtime);
 
             var hours = String(t.hours).padStart(2, '0');
             var minutes = String(t.minutes).padStart(2, '0');
@@ -226,15 +228,15 @@
 
             clock.innerHTML = t.days + " дней " + hours + ":" + minutes + ":" + seconds;
 
-            if (t.total <= 0) {  
-                clearInterval(timeinterval);  
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
                 clock.style.display = "none"; 
                 document.getElementById('congratulations').style.display = "block"; 
                 showConfetti(); 
-            }  
-        }  
+            }
+        }
 
-        updateClock();  
+        updateClock();
         var timeinterval = setInterval(updateClock, 1000);
 
         function showConfetti() {
