@@ -28,6 +28,8 @@
             border-radius: 10px;
             position: absolute;
             z-index: 10;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         #congratulations {
@@ -63,7 +65,6 @@
             color: #ff69b4;
             position: absolute;
             text-align: center;
-            width: 100%;
             z-index: 1;
         }
 
@@ -166,18 +167,31 @@
                 var gif = mediaArray[i];
                 var expression = expressions[i];
 
+                // Получаем размеры таймера для корректного размещения
+                var clockRect = clock.getBoundingClientRect();
+                var clockTop = clockRect.top;
+                var clockHeight = clockRect.height;
+
                 var img = document.createElement('img');
                 img.src = gif.src;
                 img.alt = "Случайная гифка";
                 img.classList.add('gif-item');
-                img.style.top = `${Math.random() * 80}%`; 
-                img.style.left = `${Math.random() * 90}%`; 
+
+                // Размещение гифок ниже таймера
+                var randomTop = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
+                var randomLeft = Math.random() * (window.innerWidth - 120);
+                img.style.top = `${randomTop}px`;
+                img.style.left = `${randomLeft}px`;
                 contentDiv.appendChild(img);
 
                 var expressionElement = document.createElement('h2');
                 expressionElement.textContent = expression;
                 expressionElement.classList.add('gif-text');
-                expressionElement.style.top = `${Math.random() * 80}%`;
+
+                // Размещение текста ниже таймера
+                var randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
+                expressionElement.style.top = `${randomTopText}px`;
+                expressionElement.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
                 contentDiv.appendChild(expressionElement);
             }
         } else if (dayIndex >= 20) {
