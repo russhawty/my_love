@@ -176,6 +176,57 @@
             usedPositions.push({ top, left, width, height });
         }
 
+        // Функция для размещения гифок и текста
+        function placeGifAndText(gif, expression) {
+            // Получаем размеры экрана
+            var windowHeight = window.innerHeight;
+            var windowWidth = window.innerWidth;
+
+            // Размещение гифки
+            var img = document.createElement('img');
+            img.src = gif.src;
+            img.alt = "Случайная гифка";
+            img.classList.add('gif-item');
+
+            // Генерация случайных координат для гифки
+            var randomTop = Math.random() * (windowHeight - 120); // gифка может располагаться в пределах высоты экрана
+            var randomLeft = Math.random() * (windowWidth - 120); // гифка может располагаться в пределах ширины экрана
+
+            // Проверяем, не перекрывает ли текущая позиция другие элементы
+            while (checkCollision(randomTop, randomLeft, 120, 120)) {
+                randomTop = Math.random() * (windowHeight - 120);
+                randomLeft = Math.random() * (windowWidth - 120);
+            }
+
+            img.style.top = `${randomTop}px`;
+            img.style.left = `${randomLeft}px`;
+            contentDiv.appendChild(img);
+
+            // Добавляем позицию гифки в занятые области
+            addPosition(randomTop, randomLeft, 120, 120);
+
+            // Размещение текста
+            var expressionElement = document.createElement('h2');
+            expressionElement.textContent = expression;
+            expressionElement.classList.add('gif-text');
+
+            var randomTopText = Math.random() * (windowHeight - 40); // текст может располагаться в пределах высоты экрана
+            var randomLeftText = Math.random() * (windowWidth - 200); // текст может располагаться в пределах ширины экрана
+
+            // Проверяем, не перекрывает ли текущая позиция другие элементы
+            while (checkCollision(randomTopText, randomLeftText, 200, 40)) {
+                randomTopText = Math.random() * (windowHeight - 40);
+                randomLeftText = Math.random() * (windowWidth - 200);
+            }
+
+            expressionElement.style.top = `${randomTopText}px`;
+            expressionElement.style.left = `${randomLeftText}px`;
+            contentDiv.appendChild(expressionElement);
+
+            // Добавляем позицию текста в занятые области
+            addPosition(randomTopText, randomLeftText, 200, 40);
+        }
+
         var startDate = new Date('December 19, 2024 00:00:00 GMT+03');
         var currentDate = new Date();
         var dayIndex = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
@@ -185,50 +236,7 @@
             for (let i = 0; i <= dayIndex; i++) {
                 var gif = mediaArray[i];
                 var expression = expressions[i];
-
-                // Получаем размеры таймера для корректного размещения
-                var clockRect = clock.getBoundingClientRect();
-                var clockTop = clockRect.top;
-                var clockHeight = clockRect.height;
-
-                // Размещение гифок
-                var img = document.createElement('img');
-                img.src = gif.src;
-                img.alt = "Случайная гифка";
-                img.classList.add('gif-item');
-
-                var randomTop = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
-                var randomLeft = Math.random() * (window.innerWidth - 120);
-
-                while (checkCollision(randomTop, randomLeft, 120, 120)) {
-                    randomTop = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
-                    randomLeft = Math.random() * (window.innerWidth - 120);
-                }
-
-                img.style.top = `${randomTop}px`;
-                img.style.left = `${randomLeft}px`;
-                contentDiv.appendChild(img);
-
-                addPosition(randomTop, randomLeft, 120, 120);  // Добавляем гифку в занятые позиции
-
-                // Размещение текста
-                var expressionElement = document.createElement('h2');
-                expressionElement.textContent = expression;
-                expressionElement.classList.add('gif-text');
-
-                var randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 40) + clockTop + clockHeight;
-                var randomLeftText = Math.random() * (window.innerWidth - 200);
-
-                while (checkCollision(randomTopText, randomLeftText, 200, 40)) {
-                    randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 40) + clockTop + clockHeight;
-                    randomLeftText = Math.random() * (window.innerWidth - 200);
-                }
-
-                expressionElement.style.top = `${randomTopText}px`;
-                expressionElement.style.left = `${randomLeftText}px`;
-                contentDiv.appendChild(expressionElement);
-
-                addPosition(randomTopText, randomLeftText, 200, 40);  // Добавляем текст в занятые позиции
+                placeGifAndText(gif, expression);
             }
         } else if (dayIndex >= 20) {
             document.getElementById('congratulations').style.display = "block"; 
