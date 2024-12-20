@@ -27,6 +27,7 @@
             border: 2px solid #ff69b4;
             border-radius: 10px;
             margin-bottom: 20px;
+            z-index: 10;
         }
 
         #congratulations {
@@ -45,6 +46,7 @@
         #content {
             display: block;
             margin-top: 30px;
+            position: relative;
         }
 
         #confetti {
@@ -70,11 +72,18 @@
         }
 
         .media-content img {
-            width: 100%;
+            width: 150px; /* Уменьшаем размер гифок */
             height: auto;
-            max-width: 500px;
-            margin: 20px auto;
-            display: block;
+            max-width: 100%;
+            margin: 10px;
+            position: absolute; /* Абсолютное позиционирование для случайного размещения */
+            animation: slide 10s infinite; /* Анимация для гифок */
+        }
+
+        @keyframes slide {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(50px) rotate(360deg); }
+            100% { transform: translateY(0) rotate(720deg); }
         }
 
         #content h2 {
@@ -175,6 +184,8 @@
                 var img = document.createElement('img');
                 img.src = gif.src;
                 img.alt = "Случайная гифка";
+                img.style.top = Math.random() * 80 + 'vh'; // Случайная позиция по вертикали
+                img.style.left = Math.random() * 100 + 'vw'; // Случайная позиция по горизонтали
                 contentDiv.appendChild(img);
 
                 // Создаем элемент с фразой
