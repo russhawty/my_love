@@ -178,9 +178,12 @@
 
         // Функция для размещения гифок и текста
         function placeGifAndText(gif, expression) {
-            // Получаем размеры экрана
+            // Получаем размеры экрана и таймера
             var windowHeight = window.innerHeight;
             var windowWidth = window.innerWidth;
+            var clockRect = clock.getBoundingClientRect();
+            var clockTop = clockRect.top;
+            var clockHeight = clockRect.height;
 
             // Размещение гифки
             var img = document.createElement('img');
@@ -192,8 +195,8 @@
             var randomTop = Math.random() * (windowHeight - 120); // gифка может располагаться в пределах высоты экрана
             var randomLeft = Math.random() * (windowWidth - 120); // гифка может располагаться в пределах ширины экрана
 
-            // Проверяем, не перекрывает ли текущая позиция другие элементы
-            while (checkCollision(randomTop, randomLeft, 120, 120)) {
+            // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
+            while (checkCollision(randomTop, randomLeft, 120, 120) || (randomTop + 120 > clockTop && randomTop < clockTop + clockHeight)) {
                 randomTop = Math.random() * (windowHeight - 120);
                 randomLeft = Math.random() * (windowWidth - 120);
             }
@@ -213,8 +216,8 @@
             var randomTopText = Math.random() * (windowHeight - 40); // текст может располагаться в пределах высоты экрана
             var randomLeftText = Math.random() * (windowWidth - 200); // текст может располагаться в пределах ширины экрана
 
-            // Проверяем, не перекрывает ли текущая позиция другие элементы
-            while (checkCollision(randomTopText, randomLeftText, 200, 40)) {
+            // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
+            while (checkCollision(randomTopText, randomLeftText, 200, 40) || (randomTopText + 40 > clockTop && randomTopText < clockTop + clockHeight)) {
                 randomTopText = Math.random() * (windowHeight - 40);
                 randomLeftText = Math.random() * (windowWidth - 200);
             }
