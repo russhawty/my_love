@@ -181,6 +181,7 @@
         var dayIndex = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
 
         if (dayIndex >= 0 && dayIndex < 20) {
+            // Показываем соответствующее количество гифок и надписей
             for (let i = 0; i <= dayIndex; i++) {
                 var gif = mediaArray[i];
                 var expression = expressions[i];
@@ -190,7 +191,7 @@
                 var clockTop = clockRect.top;
                 var clockHeight = clockRect.height;
 
-                // Размещаем гифки
+                // Размещение гифок
                 var img = document.createElement('img');
                 img.src = gif.src;
                 img.alt = "Случайная гифка";
@@ -215,11 +216,11 @@
                 expressionElement.textContent = expression;
                 expressionElement.classList.add('gif-text');
 
-                var randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
+                var randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 40) + clockTop + clockHeight;
                 var randomLeftText = Math.random() * (window.innerWidth - 200);
 
                 while (checkCollision(randomTopText, randomLeftText, 200, 40)) {
-                    randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 120) + clockTop + clockHeight;
+                    randomTopText = Math.random() * (window.innerHeight - clockTop - clockHeight - 40) + clockTop + clockHeight;
                     randomLeftText = Math.random() * (window.innerWidth - 200);
                 }
 
