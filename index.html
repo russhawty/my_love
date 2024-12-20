@@ -177,58 +177,69 @@
         }
 
         // Функция для размещения гифок и текста
-        function placeGifAndText(gif, expression) {
-            // Получаем размеры экрана и таймера
-            var windowHeight = window.innerHeight;
-            var windowWidth = window.innerWidth;
-            var clockRect = clock.getBoundingClientRect();
-            var clockTop = clockRect.top;
-            var clockHeight = clockRect.height;
+     function placeGifAndText(gif, expression) {
+    // Получаем размеры экрана и таймера
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+    var clockRect = clock.getBoundingClientRect();
+    var clockTop = clockRect.top;
+    var clockHeight = clockRect.height;
 
-            // Размещение гифки
-            var img = document.createElement('img');
-            img.src = gif.src;
-            img.alt = "Случайная гифка";
-            img.classList.add('gif-item');
+    // Размещение гифки
+    var img = document.createElement('img');
+    img.src = gif.src;
+    img.alt = "Случайная гифка";
+    img.classList.add('gif-item');
 
-            // Генерация случайных координат для гифки
-            var randomTop = Math.random() * (windowHeight - 120); // gифка может располагаться в пределах высоты экрана
-            var randomLeft = Math.random() * (windowWidth - 120); // гифка может располагаться в пределах ширины экрана
+    // Обработчик загрузки изображения
+    img.onload = function() {
+        console.log(`Гифка ${gif.src} успешно загружена.`);
+    };
 
-            // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
-            while (checkCollision(randomTop, randomLeft, 120, 120) || (randomTop + 120 > clockTop && randomTop < clockTop + clockHeight)) {
-                randomTop = Math.random() * (windowHeight - 120);
-                randomLeft = Math.random() * (windowWidth - 120);
-            }
+    // Обработчик ошибки загрузки изображения
+    img.onerror = function() {
+        console.error(`Не удалось загрузить гифку: ${gif.src}`);
+    };
 
-            img.style.top = `${randomTop}px`;
-            img.style.left = `${randomLeft}px`;
-            contentDiv.appendChild(img);
+    // Генерация случайных координат для гифки
+    var randomTop = Math.random() * (windowHeight - 120); // gифка может располагаться в пределах высоты экрана
+    var randomLeft = Math.random() * (windowWidth - 120); // гифка может располагаться в пределах ширины экрана
 
-            // Добавляем позицию гифки в занятые области
-            addPosition(randomTop, randomLeft, 120, 120);
+    // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
+    while (checkCollision(randomTop, randomLeft, 120, 120) || (randomTop + 120 > clockTop && randomTop < clockTop + clockHeight)) {
+        randomTop = Math.random() * (windowHeight - 120);
+        randomLeft = Math.random() * (windowWidth - 120);
+    }
 
-            // Размещение текста
-            var expressionElement = document.createElement('h2');
-            expressionElement.textContent = expression;
-            expressionElement.classList.add('gif-text');
+    img.style.top = `${randomTop}px`;
+    img.style.left = `${randomLeft}px`;
+    contentDiv.appendChild(img);
 
-            var randomTopText = Math.random() * (windowHeight - 40); // текст может располагаться в пределах высоты экрана
-            var randomLeftText = Math.random() * (windowWidth - 200); // текст может располагаться в пределах ширины экрана
+    // Добавляем позицию гифки в занятые области
+    addPosition(randomTop, randomLeft, 120, 120);
 
-            // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
-            while (checkCollision(randomTopText, randomLeftText, 200, 40) || (randomTopText + 40 > clockTop && randomTopText < clockTop + clockHeight)) {
-                randomTopText = Math.random() * (windowHeight - 40);
-                randomLeftText = Math.random() * (windowWidth - 200);
-            }
+    // Размещение текста
+    var expressionElement = document.createElement('h2');
+    expressionElement.textContent = expression;
+    expressionElement.classList.add('gif-text');
 
-            expressionElement.style.top = `${randomTopText}px`;
-            expressionElement.style.left = `${randomLeftText}px`;
-            contentDiv.appendChild(expressionElement);
+    var randomTopText = Math.random() * (windowHeight - 40); // текст может располагаться в пределах высоты экрана
+    var randomLeftText = Math.random() * (windowWidth - 200); // текст может располагаться в пределах ширины экрана
 
-            // Добавляем позицию текста в занятые области
-            addPosition(randomTopText, randomLeftText, 200, 40);
-        }
+    // Проверяем, не перекрывает ли текущая позиция таймер или другие элементы
+    while (checkCollision(randomTopText, randomLeftText, 200, 40) || (randomTopText + 40 > clockTop && randomTopText < clockTop + clockHeight)) {
+        randomTopText = Math.random() * (windowHeight - 40);
+        randomLeftText = Math.random() * (windowWidth - 200);
+    }
+
+    expressionElement.style.top = `${randomTopText}px`;
+    expressionElement.style.left = `${randomLeftText}px`;
+    contentDiv.appendChild(expressionElement);
+
+    // Добавляем позицию текста в занятые области
+    addPosition(randomTopText, randomLeftText, 200, 40);
+}
+
 
         var startDate = new Date('December 19, 2024 00:00:00 GMT+03');
         var currentDate = new Date();
